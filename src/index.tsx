@@ -1,3 +1,4 @@
+"use client";
 import React, { createContext, useRef, useCallback, useContext, useEffect, ReactNode } from 'react';
 
 interface PollingOptions<T> {
@@ -16,7 +17,7 @@ interface PollingContextType {
 
 const PollingContext = createContext<PollingContextType | undefined>(undefined);
 
-export const PollingProvider = ({ children }: { children: ReactNode }) => {
+export const usePolling = (global = false) => {
   const pollingRequestsRef = useRef<Map<string, NodeJS.Timeout>>(new Map());
 
   const stopPolling = useCallback((pollingKey: string) => {
@@ -28,7 +29,7 @@ export const PollingProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const poll = useCallback(
-    <T,>({ url, pollingKey, callback, delay = 2000, persist = true, reqOptions }: PollingOptions<T>) => {
+    <T,>({ url, pollingKey, callback, delay = 2000, persist = global, reqOptions }: PollingOptions<T>) => {
       if (pollingRequestsRef.current.has(pollingKey)) {
         return;
       }
@@ -67,6 +68,12 @@ export const PollingProvider = ({ children }: { children: ReactNode }) => {
     };
   }, []);
 
+  return { poll, stopPolling };
+
+}
+
+export const GlobalPollingProvider = ({ children }: { children: ReactNode }) => {
+  const { poll, stopPolling } = usePolling(true);
   return (
     <PollingContext.Provider value={{ poll, stopPolling }}>
       {children}
@@ -74,7 +81,7 @@ export const PollingProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-const usePolling = (): PollingContextType => {
+export const useGlobalPolling = (): PollingContextType => {
   const context = useContext(PollingContext);
   if (!context) {
     throw new Error('usePolling must be used within a PollingProvider');
