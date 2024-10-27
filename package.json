@@ -1,11 +1,15 @@
 {
   "name": "@vaxadnpm/use-polling",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A react hook for polling requests",
   "main": "dist/index.ts",
   "types": "dist/index.d.ts",
   "publishConfig": {
     "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vaxad/use-polling.git"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
