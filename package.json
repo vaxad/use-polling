@@ -1,6 +1,6 @@
 {
   "name": "@vaxadnpm/use-polling",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A react hook for polling requests",
   "main": "dist/index.ts",
   "types": "dist/index.d.ts",
