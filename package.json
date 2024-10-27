@@ -1,0 +1,30 @@
+{
+  "name": "@vaxadnpm/use-polling",
+  "version": "1.0.0",
+  "description": "A react hook for polling requests",
+  "main": "dist/index.ts",
+  "types": "dist/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "react",
+    "hook",
+    "polling"
+  ],
+  "author": "vaxad",
+  "license": "MIT",
+  "dependencies": {
+    "react": "^18.3.1",
+    "typescript": "^5.6.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.8.1",
+    "@types/react": "^18.3.12"
+  }
+}
