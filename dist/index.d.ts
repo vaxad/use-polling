@@ -11,8 +11,12 @@ interface PollingContextType {
     poll: <T>(options: PollingOptions<T>) => void;
     stopPolling: (pollingKey: string) => void;
 }
-export declare const PollingProvider: ({ children }: {
+export declare const usePolling: (global?: boolean) => {
+    poll: <T>({ url, pollingKey, callback, delay, persist, reqOptions }: PollingOptions<T>) => (() => void) | undefined;
+    stopPolling: (pollingKey: string) => void;
+};
+export declare const GlobalPollingProvider: ({ children }: {
     children: ReactNode;
 }) => React.JSX.Element;
-declare const usePolling: () => PollingContextType;
+export declare const useGlobalPolling: () => PollingContextType;
 export default usePolling;

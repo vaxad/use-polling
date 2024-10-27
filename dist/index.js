@@ -60,11 +60,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PollingProvider = void 0;
+exports.useGlobalPolling = exports.GlobalPollingProvider = exports.usePolling = void 0;
 var react_1 = __importStar(require("react"));
 var PollingContext = (0, react_1.createContext)(undefined);
-var PollingProvider = function (_a) {
-    var children = _a.children;
+var usePolling = function (global) {
+    if (global === void 0) { global = false; }
     var pollingRequestsRef = (0, react_1.useRef)(new Map());
     var stopPolling = (0, react_1.useCallback)(function (pollingKey) {
         var intervalId = pollingRequestsRef.current.get(pollingKey);
@@ -74,7 +74,7 @@ var PollingProvider = function (_a) {
         }
     }, []);
     var poll = (0, react_1.useCallback)(function (_a) {
-        var url = _a.url, pollingKey = _a.pollingKey, callback = _a.callback, _b = _a.delay, delay = _b === void 0 ? 2000 : _b, _c = _a.persist, persist = _c === void 0 ? true : _c, reqOptions = _a.reqOptions;
+        var url = _a.url, pollingKey = _a.pollingKey, callback = _a.callback, _b = _a.delay, delay = _b === void 0 ? 2000 : _b, _c = _a.persist, persist = _c === void 0 ? global : _c, reqOptions = _a.reqOptions;
         if (pollingRequestsRef.current.has(pollingKey)) {
             return;
         }
@@ -119,14 +119,21 @@ var PollingProvider = function (_a) {
             pollingRequestsRef.current.clear();
         };
     }, []);
+    return { poll: poll, stopPolling: stopPolling };
+};
+exports.usePolling = usePolling;
+var GlobalPollingProvider = function (_a) {
+    var children = _a.children;
+    var _b = (0, exports.usePolling)(true), poll = _b.poll, stopPolling = _b.stopPolling;
     return (react_1.default.createElement(PollingContext.Provider, { value: { poll: poll, stopPolling: stopPolling } }, children));
 };
-exports.PollingProvider = PollingProvider;
-var usePolling = function () {
+exports.GlobalPollingProvider = GlobalPollingProvider;
+var useGlobalPolling = function () {
     var context = (0, react_1.useContext)(PollingContext);
     if (!context) {
         throw new Error('usePolling must be used within a PollingProvider');
     }
     return context;
 };
-exports.default = usePolling;
+exports.useGlobalPolling = useGlobalPolling;
+exports.default = exports.usePolling;
